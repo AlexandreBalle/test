@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{
-    Request, Response
-};
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Entity\{Announce, Location, User, Vehicle};
+use App\Entity\Announce;
+use App\Entity\Location;
+use App\Entity\User;
+use App\Entity\Vehicle;
 use App\Form\SearchAnnounceType;
 
 class HomeController extends AbstractController
@@ -30,7 +32,7 @@ class HomeController extends AbstractController
             'method' => 'GET'
         ]);
   
-        if($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             if ($searchForm->handleRequest($request)->isValid()) {
                 $announce = $repoAnnounce->findForSearch($searchForm->getData());
 
@@ -72,7 +74,8 @@ class HomeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function eSwipe(Request $request) {
+    public function eSwipe(Request $request)
+    {
         $searchForm  = $this->createForm(SearchAnnounceType::class, null, [
             'action' => $this->generateUrl('eSwipe'),
             'method' => 'POST'
@@ -100,7 +103,8 @@ class HomeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function vehicleDescription(int $announceId, Request $request) {
+    public function vehicleDescription(int $announceId, Request $request)
+    {
         $em       = $this->getDoctrine()->getManager();
         $announce = $em->getRepository(Announce::class)->find($announceId);
 
