@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: easybar/php:7.2.9-dev
+      - image: chialab/php-dev:7.3-apache
 
     steps:
       - checkout
