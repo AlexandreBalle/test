@@ -1,0 +1,104 @@
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true" id="vehicleDescription">
+    <div class="modal-dialog modal-lg d-flex justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredLabel">
+                    <b>{{ announce.vehicle.brand }}</b> {{ announce.vehicle.model }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7 col-sm-12 p-0">
+                            {% if announce.vehicle.photo %}
+                                <img src="{{ asset('/uploads/' ~ announce.vehicle.photo) }}" style="max-height:50rem; max-width:27rem;">
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-12 p-0" style="font-size: 15px; margin-top:3rem">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <h5>Concernant l'annonce :</h5>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Prix par jour :</b> {{ announce.price }}€ /J
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Position de la voiture :</b> {{ announce.address }}, {{ announce.zipcode }} {{ announce.city }}
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Commentaire du proprietaire :</b> {{ announce.description }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="card" style="width: 100%">
+                            <div class="card-header">
+                                Description :
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <b>Proprietaire :</b>
+                                    <span style="float:right">{{ announce.user.firstname }} {{ announce.user.lastname }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Marque : </b>
+                                    <span style="float:right">{{ announce.vehicle.brand }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Modèle : </b>
+                                    <span style="float:right">{{ announce.vehicle.model }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Plaque de matriculation : </b>
+                                    <span style="float:right">{{ announce.vehicle.matriculation }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Nombre de porte : </b>
+                                    <span style="float:right">{{ announce.vehicle.door }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Nombre de place : </b>
+                                    <span style="float:right">{{ announce.vehicle.place }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        {% if announce.comments is not empty %}
+                            <div class="card" style="width: 100%">
+                                <div class="card-header">
+                                    Commentaire :
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    {% for comment in announce.comments %}
+                                        <li class="list-group-item">
+                                            <p class="card-text text-left">
+                                                {% if comment.content %}
+                                                    {{ comment.content }}
+                                                {% endif %}
+                                            </p>
+                                            <p class="card-text text-right">
+                                                {% if comment.rate %}
+                                                    Note :
+                                                    <span style="color:yellow">
+                                                        {{ comment.rate|number_format(1) }}
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </span>
+                                                {% endif %}
+                                            </p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

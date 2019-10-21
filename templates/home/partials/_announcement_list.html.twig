@@ -1,0 +1,147 @@
+<div class="r-advantage-main-part">
+    <div class="container clearfix">
+        {% if annonces | length != 0 %}
+            {% if annonces.voiture %}
+                <div class="row clearfix r-best-offer-list">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>VOITURE</h5>
+                    </div>
+                </div>
+
+                <div id="carousel-voiture" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for annonce in annonces.voiture %}
+                            {% if loop.first %}
+                                <div class="carousel-item active">
+                                    <div class="row clearfix r-best-offer-list">
+                            {% endif %}
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="r-best-offer-single">
+                                        <div class="r-best-offer-in">
+                                            <div class="r-offer-img">
+                                                <a class="d-inline-block description" href="#"
+                                                   data-href="{{ path('vehicleDescription', {'announceId' : annonce.id}) }}">
+                                                    {% if annonce.vehicle.photo %}
+                                                        <img src="{{ asset('uploads/' ~ annonce.vehicle.photo) }}"
+                                                             class="img-fluid d-block m-auto" alt="">
+                                                    {% else %}
+                                                        <img src="{{ asset('images/best-01.jpg') }}"
+                                                             class="img-fluid d-block m-auto" alt="">
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            <div class="r-best-offer-content">
+                                                <a class="description" href="#"
+                                                   data-href="{{ path('vehicleDescription', {'announceId' : annonce.id}) }}">
+                                                    <b>{{ annonce.vehicle.brand }}</b> {{ annonce.vehicle.model }}
+                                                </a>
+                                                <p><b>{{ annonce.price }} €</b> par jour(s)</p>
+                                                <ul class="pl-0 mb-0">
+                                                    <li><i class="fa fa-car"></i><span>{{ annonce.vehicle.year | date('Y')}}</span></li>
+                                                    <li><i class="fa fa-cogs"></i><span>ELECTRIQUE</span></li>
+                                                    <li><i class="fa fa-road"></i><span>{{ annonce.vehicle.km }} KM</span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="r-offer-rewst-this">
+                                                <a href="{{ path('detail_announce',{'id':annonce.id}) }}"  style="left:0; right:0;text-decoration: none; color: white;">
+                                                    <span class="text-uppercase">Louer cette voiture</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% if loop.index is divisible by(3) and not loop.last and not loop.first %}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row clearfix r-best-offer-list">
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel-voiture" role="button" data-slide="prev" style="background: #4b5257; height: 87%; width: 5rem;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-voiture" role="button" data-slide="next" style="background: #4b5257; height: 87%; width: 5rem;">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+        {% endif %}
+
+        {% if annonces.scooter %}
+            <div class="row clearfix r-best-offer-list">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h5>SCOOTER</h5>
+                </div>
+            </div>
+
+            <div id="carousel-scooter" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for annonce in annonces.scooter %}
+                        {% if loop.first %}
+                            <div class="carousel-item active">
+                                <div class="row clearfix r-best-offer-list">
+                        {% endif %}
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="r-best-offer-single">
+                                    <div class="r-best-offer-in">
+                                        <div class="r-offer-img">
+                                            <a class="d-inline-block description" href="#"
+                                               data-href="{{ path('vehicleDescription', {'announceId' : annonce.id}) }}">
+                                                {% if annonce.vehicle.photo %}
+                                                    <img src="{{ asset('uploads/' ~ annonce.vehicle.photo) }}"
+                                                         class="img-fluid d-block m-auto" alt="">
+                                                {% else %}
+                                                    <img src="{{ asset('images/best-01.jpg') }}"
+                                                         class="img-fluid d-block m-auto" alt="">
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="r-best-offer-content">
+                                            <a class="description" href="#"
+                                               data-href="{{ path('vehicleDescription', {'announceId' : annonce.id}) }}">
+                                                <b>{{ annonce.vehicle.brand }}</b> {{ annonce.vehicle.model }}
+                                            </a>
+                                            <p><b>{{ annonce.price }} €</b> par jour(s)</p>
+                                            <ul class="pl-0 mb-0">
+                                                <li><i class="fa fa-car"></i><span>{{ annonce.vehicle.year | date('Y')}}</span></li>
+                                                <li><i class="fa fa-cogs"></i><span>ELECTRIQUE</span></li>
+                                                <li><i class="fa fa-road"></i><span>{{ annonce.vehicle.km }} KM</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="r-offer-rewst-this">
+                                            <a href="{{ path('detail_announce',{'id':annonce.id}) }}" style="left:0; right:0;text-decoration: none; color: white;">
+                                                <span class="text-uppercase">Louer cette voiture</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% if loop.index is divisible by(3) and not loop.last and not loop.first %}
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row clearfix r-best-offer-list">
+                        {% endif %}
+                    {% endfor %}
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel-scooter" role="button" data-slide="prev" style="background: #4b5257; height: 87%; width: 5rem;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-scooter" role="button" data-slide="next" style="background: #4b5257; height: 87%; width: 5rem;">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+
+                <div id="modal-ajax-desc"></div>
+            {% endif %}
+        {% else %}
+            <p style="display: flex;justify-content: center">Aucun résultat pour votre recherche...</p>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-100">
+        <div class="jumbotron text-center">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h3 class="display-4">Historique des locations</h3>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne" style="cursor:pointer" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h5 class="mb-0">
+                                    Mes locations en cours
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    {% if locationDate|length != 0 %}
+                                        <table class="table mt-3">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>Voiture</th>
+                                                <th>Adresse</th>
+                                                <th>Ville</th>
+                                                <th>Date de début</th>
+                                                <th>Date de fin</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for date in locationDate %}
+                                                <tr {% if date.endDate|date('Y-m-d') < "now"|date('Y-m-d') and not date.returned %}style="color:red"{% endif %}>
+                                                    <td>{{ date.brand }} {{ date.model }}</td>
+                                                    <td>{{ date.address }}</td>
+                                                    <td>{{ date.city }}</td>
+                                                    <td>{{ date.startDate | date('j/m/Y H:i') }}</td>
+                                                    <td>{{ date.endDate | date('j/m/Y H:i') }}</td>
+
+                                                    {% if date.returned %}
+                                                        <td style="color:green">
+                                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i> Rendu
+                                                        </td>
+                                                    {% elseif date.endDate|date('Y-m-d') < "now"|date('Y-m-d') and not date.returned %}
+                                                        <td style="color:red">
+                                                            <button class="btn btn-danger leave-comment" type="button"
+                                                               data-toggle="modal" data-target="#leave-comment"
+                                                               id="comment" data-href="{{ path('user_endLocation', {'locationId': date.id | urlencrypt}) }}">
+                                                                Rendu en retard
+                                                            </button>
+                                                            <div id="modal-ajax"></div>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            <button class="btn btn-success leave-comment" type="button"
+                                                               data-toggle="modal" data-target="#leave-comment"
+                                                               id="comment" data-href="{{ path('user_endLocation', {'locationId': date.id | urlencrypt}) }}">
+                                                                Rendu
+                                                            </button>
+                                                            <div id="modal-ajax"></div>
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p>Aucune location en cours !</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" style="cursor:pointer" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <h5 class="mb-0">
+                                    Mes locations à venir
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    {% if locationFutur|length != 0 %}
+                                        <table class="table mt-3">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>Voiture</th>
+                                                <th>Immatriculation</th>
+                                                <th>Adresse</th>
+                                                <th>Ville</th>
+                                                <th>Date de début</th>
+                                                <th>Date de fin</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for futur in locationFutur %}
+                                                <tr>
+                                                    <td>{{ futur.brand }} {{ futur.model }}</td>
+                                                    <td>{{ futur.matriculation }}</td>
+                                                    <td>{{ futur.address }}</td>
+                                                    <td>{{ futur.city }}</td>
+                                                    <td>{{ futur.startDate | date('j/m/Y') }}</td>
+                                                    <td>{{ futur.endDate | date('j/m/Y') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p>Aucune location en attente !</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" style="cursor:pointer" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <h5 class="mb-0">
+                                    Mes locations passées
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    {% if locationPast|length != 0 %}
+                                        <table class="table mt-3">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th>Voiture</th>
+                                                <th>Immatriculation</th>
+                                                <th>Adresse</th>
+                                                <th>Ville</th>
+                                                <th>Date de début</th>
+                                                <th>Date de fin</th>
+                                                <th>Prix</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for past in locationPast %}
+                                                <tr {% if past.returned_at > past.endDate %}style="color:red"{% endif %}>
+                                                    <td>{{ past.brand }} {{ past.model }}</td>
+                                                    <td>{{ past.matriculation }}</td>
+                                                    <td>{{ past.address }}</td>
+                                                    <td>{{ past.city }}</td>
+                                                    <td>{{ past.startDate | date('j/m/Y') }}</td>
+                                                    <td>{{ past.endDate | date('j/m/Y') }}</td>
+                                                    <td>{{ past.price*past.dateDiff }} €</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p>Aucune location passé !</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

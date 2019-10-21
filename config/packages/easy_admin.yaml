@@ -1,0 +1,101 @@
+easy_admin:
+    site_name: 'E-motion Admin'
+    list:
+        item_permission: 'ROLE_ADMIN'
+    user:
+        display_name: true
+        display_avatar: false
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
+        number: '%.2f'
+    design:
+        menu:
+            - label: 'Annonces'
+              icon: 'tag'
+              entity: 'Announce'
+            - label: 'Utilisateurs'
+              icon: 'users'
+              entity: 'User'
+            - label: 'Vehicules'
+              icon: 'tag'
+              entity: 'Vehicle'
+    entities:
+        Vehicle:
+            class: App\Entity\Vehicle
+            label: 'Vehicules'
+            form:
+                fields:
+                    - { property: 'brand', label: 'Marque' }
+                    - { property: 'model', label: 'Modèle' }
+                    - { property: 'matriculation', label: 'Matriculation' }
+                    - { property: 'km', label: 'Kilometrage' }
+                    - { property: 'autonomy', label: 'Autonomie' }
+                    - { property: 'user', label: 'Détenteur' }
+                    - { property: 'door', label: 'Nombre de portes' }
+                    - { property: 'place', label: 'Nombre de place' }
+            list:
+                fields:
+                    - { property: 'id', label: '#' }
+                    - { property: 'brand', label: 'Marque' }
+                    - { property: 'model', label: 'Modèle' }
+                    - { property: 'matriculation', label: 'Matriculation' }
+                    - { property: 'km', label: 'Kilometrage' }
+                    - { property: 'autonomy', label: 'Autonomie' }
+                    - { property: 'user', label: 'Auteur' }
+        Announce:
+            class: App\Entity\Announce
+            label: 'Annonces'
+            form:
+                fields:
+                    - { property: 'address', label: 'Adresse' }
+                    - { property: 'city', label: 'Ville' }
+                    - { property: 'zipcode', label: 'Code Postal' }
+                    - { property: 'price', label: 'Prix' }
+                    - { property: 'description', label: 'Description' }
+                    - { property: 'enable', label: 'Disponible' }
+                    - { property: 'user', label: 'Auteur' }
+                    - { property: 'comments', label: 'Commentaires' }
+                    - { property: 'locations', label: 'Locations' }
+            list:
+                fields:
+                    - { property: 'id', label: '#' }
+                    - { property: 'address', label: 'Adresse' }
+                    - { property: 'city', label: 'Ville' }
+                    - { property: 'zipcode', label: 'Code Postal' }
+                    - { property: 'price', label: 'Prix' }
+                    - { property: 'description', label: 'Description' }
+                    - { property: 'user', label: 'Auteur' }
+                    - { property: 'vehicle', label: 'Vehicule' }
+                    - { property: 'enable', label: 'Disponible' }
+        User:
+            class: App\Entity\User
+            label: 'Utilisateurs'
+            form:
+                fields:
+                    - { property: 'lastname', label: 'Nom' }
+                    - { property: 'firstname', label: 'Prenom' }
+                    - { property: 'birthdayDate', label: 'Anniversaire' }
+                    - { property: 'email', label: 'Adresse mail' }
+                    - { property: 'password', label: 'Mot de passe' }
+                    - { property: 'address', label: 'Adresse postal' }
+                    - { property: 'city', label: 'Ville' }
+                    - { property: 'zipcode', label: 'Code Postal' }
+                    - { property: 'phone', label: 'Numero de telephone' }
+                    - { property: 'loyaltyPoints', label: 'Points de fidelité' }
+                    - { property: 'vehicles', label: 'Vehicules' }
+                    - { property: 'announces', label: 'Annonces' }
+                    - { property: 'comments', label: 'Commentaires' }
+                    - { property: 'locations', label: 'Locations' }
+            list:
+                fields:
+                    - { property: 'id', label: '#' }
+                    - { property: 'lastname', label: 'Nom' }
+                    - { property: 'firstname', label: 'Prenom' }
+                    - { property: 'email', label: 'Adresse mail' }
+                    - { property: 'address', label: 'Adresse postal' }
+                    - { property: 'city', label: 'Ville' }
+                    - { property: 'zipcode', label: 'Code Postal' }
+                    - { property: 'phone', label: 'Numero de telephone' }
+                    - { property: 'loyaltyPoints', label: 'Points de fidelité' }

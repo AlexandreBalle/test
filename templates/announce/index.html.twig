@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="r-header r-header-inner">
+        <div class="r-header-inner-banner">
+            <div class="r-header-in-over">
+                <h1><b>Nos Annonces</b></h1>
+                <div class="r-breadcrum">
+                    <ul>
+                        <li><a href="login-register.html#">Accueil</a></li>
+                        <li><span>Nos Annonces</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="r-best-vehicles">
+            <div class="container">
+                <div style="display: flex;justify-content: center">
+                    {{ form_start(searchForm) }}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    {{ form_widget(searchForm.minPrice) }}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    {{ form_widget(searchForm.maxPrice) }}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    {{ form_widget(searchForm.type) }}
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <button type="submit" class="btn btn-danger wrn-btn">Rechercher !</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(searchForm) }}
+                </div>
+                {% if annonces | length != 0 %}
+                    <div class="row clearfix r-best-offer-list">
+
+                        {% for annonce in annonces %}
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="r-best-offer-single">
+                                    <div class="r-best-offer-in">
+                                        <div class="r-offer-img">
+                                            <a class="d-inline-block" href="index.html#"><img src="/images/best-01.jpg" class="img-fluid d-block m-auto" alt=""></a>
+                                        </div>
+                                        <div class="r-best-offer-content">
+                                            <a href="index.html#"><b>{{ annonce.vehicle.brand }}</b> {{ annonce.vehicle.model }}</a>
+                                            <p><b>{{ annonce.price }} €</b> par jour(s)</p>
+                                            <ul class="pl-0 mb-0">
+                                                <li><i class="fa fa-car"></i><span>{{ annonce.vehicle.year | date('Y')}}</span></li>
+                                                <li><i class="fa fa-cogs"></i><span>AUTO</span></li>
+                                                <li><i class="fa fa-beer"></i><span>ELECTRIQUE</span></li>
+                                                <li><i class="fa fa-road"></i><span>200 KM</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="r-offer-rewst-this">
+                                            <a href="{{ path('detail_announce',{'id':annonce.id}) }}">
+                                                <span class="text-uppercase">Louer cette voiture</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="display: flex;justify-content: center">Aucun résultat pour votre recherche...</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

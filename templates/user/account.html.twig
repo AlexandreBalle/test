@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Account{% endblock %}
+
+{% block body %}
+    <div class="container mt-100">
+        <div class="jumbotron text-center">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h3 class="display-4">Mon compte</h3>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    {{ form_start(formUser) }}
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td><b>Nom : </b></td>
+                                <td>{{ form_widget(formUser.lastname, {'value': infoUser.lastname}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Prénom : </b></td>
+                                <td>{{ form_widget(formUser.firstname, { 'value': infoUser.firstname}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Date de naissance : </b></td>
+                                <td>{{ form_widget(formUser.birthdayDate, {'value': infoUser.birthdayDate | date('Y-m-d')}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Adresse : </b></td>
+                                <td>{{ form_widget(formUser.address, {'value': infoUser.address}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Code postal : </b></td>
+                                <td>{{ form_widget(formUser.zipcode, {'value': infoUser.zipcode}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Ville : </b></td>
+                                <td>{{ form_widget(formUser.city, {'value': infoUser.city}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>N° Téléphone : </b></td>
+                                <td>{{ form_widget(formUser.phone, {'value': infoUser.phone}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Email : </b></td>
+                                <td>{{ form_widget(formUser.email, {'value': infoUser.email}) }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Points de fidélités : </b></td>
+                                <td>{{ (infoUser.loyaltyPoints != 0) ? infoUser.loyaltyPoints : 0}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Permis de conduire : </b></td>
+                                <td>{{ form_widget(formUser.licenseDriving, {'value': infoUser.licenseDriving}) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group" style="display:flex;justify-content: center">
+                        <button class="btn btn-full">Modifier</button>
+                    </div>
+                    {{ form_end(formUser) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

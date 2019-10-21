@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container mt-100">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                {% set id = 0 %}
+                {% for annonce in annonces %}
+                    <div style="z-index: {{ id }}; position: absolute;width:70%;">
+                        <div class="card h-500" id="card{{ id }}">
+                            <div class="card-header">
+                                <h5 style="float:left"><b>{{ annonce.vehicle.brand }}</b> {{ annonce.vehicle.model }}</h5>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-outline-warning btn-circle description"
+                                            data-toggle="modal" data-target=".bd-example-modal-lg"
+                                            data-href="{{ path('vehicleDescription', {'announceId' : annonce.id}) }}">
+                                        <i class="fa fa-info"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body text-left">
+                                <div style="float: left; margin-right:2rem">
+                                    {% if annonce.vehicle.photo %}
+                                        <img src="{{ asset('/uploads/' ~ annonce.vehicle.photo) }}" height="400rem">
+                                    {% endif %}
+                                </div>
+                                <p class="card-text">
+                                    Tarif : {{ annonce.price }}€ /J<br>
+                                    Lieu : {{ annonce.address }} {{ annonce.city }}
+                                </p>
+                                <p>
+                                    <i class="fa fa-car"></i><span>{{ annonce.vehicle.year | date('Y') }}</span>
+                                    <i class="fa fa-road"></i><span>{{ annonce.vehicle.autonomy }} Km</span>
+                                </p>
+                            </div>
+                            <div class="card-footer text-right">
+                                <div style="float:left">
+                                    <button class="btn btn-success">
+                                        <i class="fa fa-bolt"></i>
+                                        Réservation instantanée
+                                    </button>
+                                </div>
+                                <button id="{{ id }}" class="btn btn-danger btnNon">
+                                    Non
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% set id = id + 1 %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="modal-ajax-desc"></div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript">
+        $(function () {
+            $('.btnNon').click(function (event) {
+                id = event.target.id;
+                $('#card' + id).animate({
+                    right: '250px',
+                    opacity: '0'
+                }, function () {
+                    $(this).remove();
+                });
+
+
+            });
+        });
+    </script>
+{% endblock %}

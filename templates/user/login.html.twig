@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="r-header r-header-inner">
+        <div class="r-header-inner-banner">
+            <div class="r-header-in-over">
+                <h1><b>Connexion</b></h1>
+                <div class="r-breadcrum">
+                    <ul>
+                        <li><a href="{{ path('home') }}">Accueil</a></li>
+                        <li><span>Connexion</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="r-login-register">
+        <div class="r-login-register">
+            <div class="r-login-register-in" style="display: flex;justify-content: center">
+                <div class="col-md-8">
+                    <div class="r-auth-outer">
+                        <div class="r-auth-head">
+                            <h2><b>Connexion</b></h2>
+                            <span>Login to our website</span>
+                        </div>
+                        <div class="r-auth-form">
+                            <div class="r-or-line"><span>CONNEXION</span></div>
+                            <form action="{{ path("user_login") }}" method="POST">
+                                {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="_email" required placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="_password" required placeholder="Password">
+                                </div>
+                                <div class="form-group" style="display:flex;justify-content: center">
+                                    <button class="btn btn-full">Connexion</button>
+                                </div>
+                            </form>
+                            <div class="r-from-inof">
+                                <p class="text-center">Pas de compte ? <a href="{{ path("user_register") }}">Inscris toi</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="r-get-in-touch">
+        <div class="r-get-in-touch">
+            <div class="container">
+                <div class="r-get-header">
+                    <span>CONTACT US NOW</span>
+                    <h2>Keep <b>In Touch.</b></h2>
+                </div>
+                <div class="r-get-form">
+                    <form action="login-register.html#">
+                        <div class="clearfix">
+                            <div class="form-group"><input type="text" placeholder="User name"></div>
+                            <div class="form-group"><input type="email" placeholder="Email Address"></div>
+                        </div>
+                        <div class="form-group"><input type="email" placeholder="Title Message"></div>
+                        <div class="form-group">
+                            <textarea placeholder="Message"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-full">SEND MESSAGE NOW</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce !{% endblock %}
+
+{% block body %}
+    <div class="r-header r-header-inner">
+        <div class="r-header-inner-banner">
+            <div class="r-header-in-over">
+                <h1><b>{{ annonce.vehicle.brand }}</b></h1>
+                <div class="r-breadcrum">
+                    <ul>
+                        <li><a href="{{ path('home') }}">Accueil</a></li>
+                        <li><span>{{ annonce.vehicle.brand }} {{ annonce.vehicle.model }}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="row">
+                <aside class="col-sm-5 border-right">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap" style="margin-right: -15px">
+                            <img src="{{ asset('uploads/' ~annonce.vehicle.photo) }}" alt="" style="width:100%;text-align: center">
+                        </div>
+                    </article>
+                </aside>
+                <aside class="col-sm-7">
+                    <article class="card-body p-5">
+                        <h3 class="title mb-3">{{ annonce.vehicle.brand }} {{ annonce.vehicle.model }}</h3>
+
+                        <p class="price-detail-wrap">
+                            <span class="price h3 text-warning">
+                                <span class="num" id="pricePerDay">{{ annonce.price }}</span><span class="currency">€</span></span><span> /par jour</span>
+                        </p> <!-- price-detail-wrap .// -->
+                        <dl class="item-property">
+                            <dt>Description</dt>
+                            <dd><p>{{ annonce.description }}</p>
+                            </dd>
+                        </dl>
+                        <dl class="param param-feature">
+                            <dt>Modele</dt>
+                            <dd>{{ annonce.vehicle.model }}</dd>
+                        </dl>
+                        <dl class="param param-feature">
+                            <dt>Autonomie</dt>
+                            <dd>{{ annonce.vehicle.autonomy }} Km</dd>
+                        </dl>
+                        <dl class="param param-feature">
+                            <dt>Année du Vehicule</dt>
+                            <dd>{{ annonce.vehicle.year | date('Y') }}</dd>
+                        </dl>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <dl class="param param-inline">
+                                    <dt>Durée de location :</dt>
+                                    {{ form_start(form) }}
+                                        <div class="my-custom-class-for-errors">
+                                            {{ form_errors(form) }}
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                {{ form_row(form.startDateTime) }}
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                {{ form_row(form.stopDateTime) }}
+                                            </div>
+                                        </div>
+                                    <hr>
+                                    <p>Prix Total : <span id="prixTotal"></span> €</p>
+                                    <hr>
+                                    <input type="submit" value="Payer" class="btn btn-lg btn-primary text-uppercase">
+                                    {{ form_end(form) }}
+
+                                </dl>  <!-- item-property .// -->
+                            </div> <!-- col.// -->
+
+                        </div> <!-- row.// -->
+
+                    </article> <!-- card-body.// -->
+                </aside> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function(){
+           $('#date_location_startDateTime_date, #date_location_startDateTime_time,#date_location_stopDateTime_date, #date_location_stopDateTime_time ').on('change',function () {
+
+               if($('#date_location_startDateTime_date').val() && $('#date_location_startDateTime_time').val()
+                    && $("#date_location_stopDateTime_date").val() != "" && $('#date_location_stopDateTime_time').val() != ""){
+
+                   var date1 =$('#date_location_startDateTime_date').val();
+                   var time1 =$('#date_location_startDateTime_time').val();
+                   var dateComplete1 = date1 + " " + time1+':00';
+
+                   var date2 =$('#date_location_stopDateTime_date').val();
+                   var time2 =$('#date_location_stopDateTime_time').val();
+                   var dateComplete2 = date2 + " " + time2+':00';
+
+                   var dt1 = new Date(dateComplete1);
+                   var dt2 = new Date(dateComplete2);
+
+
+                   var diff = diff_hours(dt2,dt1);
+                   var pricePerHours = parseInt($("#pricePerDay").html()) / 24 ;
+                   var prixTotal = pricePerHours * diff;
+
+                   $("#prixTotal").html(parseInt(prixTotal));
+
+                }
+           })
+
+            function diff_hours(dt2, dt1)
+            {
+
+                var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+                diff /= (60 * 60);
+                return Math.abs(Math.round(diff));
+
+            }
+        });
+    </script>
+{% endblock %}

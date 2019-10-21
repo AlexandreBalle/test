@@ -1,0 +1,79 @@
+App\Entity\User:
+  user{1..20}:
+    firstname: <firstName()>
+    lastname: <lastName()>
+    birthdayDate: <dateTimeBetween('-70 years', '-18 years')>
+    address: <streetAddress()>
+    zipcode: <numberBetween(10000, 90000)>
+    city: <city()>
+    signUpDate: <dateTimeBetween('-17 years', '-1 years')>
+    licenseDriving:
+    photo: "image-not-found.png"
+    email: <email()>
+    phone: <phoneNumber()>
+    loyaltyPoints: <numberBetween(0, 700)>
+    password: "<passwordGenerator(user)>"
+    roles: "[ROLE_USER]"
+  admin:
+    firstname: <firstName()>
+    lastname: <lastName()>
+    birthdayDate: <dateTimeBetween('-70 years', '-18 years')>
+    address: <streetAddress()>
+    zipcode: <numberBetween(10000, 90000)>
+    city: <city()>
+    signUpDate: <dateTimeBetween('-17 years', '-1 years')>
+    licenseDriving:
+    photo: "image-not-found.png"
+    email: "admin@admin.fr"
+    phone: <phoneNumber()>
+    loyaltyPoints: <numberBetween(0, 700)>
+    password: "<passwordGenerator(admin)>"
+    roles: "[ROLE_ADMIN]"
+
+App\Entity\Vehicle:
+  vehicle{1..500}:
+    user: "@user<numberBetween(1,20)>"
+    photo: "image-not-found.png"
+    type:  <randomElement(['voiture','scooter'])>
+    brand: <randomElement(['Mazda','Kia','Renault', 'Opel', 'Tesla'])>
+    model: <randomElement(['Clio','208','Class A', '508', 'A1'])>
+    km: <numberBetween( 0, 200000)>
+    matriculation: <swiftBicNumber()>
+    year: <dateTimeBetween('-30 years', '-1 years')>
+    autonomy: <numberBetween(0, 700)>
+    door: <randomElement([2,5,7])>
+    place: <randomElement([2,5,7])>
+
+App\Entity\Announce:
+  announce{1..20}:
+    vehicle: "@vehicle<current()>"
+    user: "@user<numberBetween(1,20)>"
+    address: <streetAddress()>
+    price: <numberBetween( 0, 80)>
+    zipcode: <postcode()>
+    city: <city()>
+    description: <paragraph( 3, true)>
+    enable: boolean(80)
+
+App\Entity\Comment:
+  comment{1..20}:
+    user: "@user<numberBetween(1,20)>"
+    announce: "@announce<numberBetween(1,20)>"
+    content: <paragraph( 3, true)>
+    rate: <numberBetween( 0, 5)>
+
+App\Entity\Location:
+  location{1..60}:
+    user: "@user<numberBetween(1,20)>"
+    announce: "@announce<numberBetween(1,20)>"
+    startDate: <dateTimeBetween('-1 years', '-6 months')>
+    endDate: <dateTimeBetween('-6 months', 'now')>
+
+
+
+
+
+
+
+
+
