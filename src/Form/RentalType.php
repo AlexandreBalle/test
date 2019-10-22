@@ -83,7 +83,7 @@ class RentalType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
-        ])->add('autonomy',IntegerType::class, [
+        ])->add('autonomy', IntegerType::class, [
             'label' => 'Autonomie :',
             'required' => true,
             'attr' => [
@@ -115,7 +115,8 @@ class RentalType extends AbstractType
         );
     }
 
-    public function isCar(FormInterface $form, $type) {
+    public function isCar(FormInterface $form, $type)
+    {
         if ($type === Vehicle::$types[0]) {
             $form->add('door', IntegerType::class, [
                 'label' => 'Nombre de portes :',
@@ -131,7 +132,8 @@ class RentalType extends AbstractType
         }
     }
 
-    public function getChoices() {
+    public function getChoices()
+    {
         $array = [];
 
         foreach (Vehicle::$types as $type) {
@@ -144,7 +146,7 @@ class RentalType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Vehicle::class,
+            'data_class'      => Vehicle::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             'csrf_token_id'   => 'rental_item',

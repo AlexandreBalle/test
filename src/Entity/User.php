@@ -473,7 +473,8 @@ class User implements UserInterface
         $this->loyaltyPoints = $loyaltyPoints;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->lastname . " ". $this->firstname;
     }
 }

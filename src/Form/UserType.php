@@ -35,14 +35,14 @@ class UserType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                 ],
-            ])->add('birthdayDate',DateType::class,[
+            ])->add('birthdayDate', DateType::class, [
                 'required' => true,
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'form-control'
                 ],
             ])
-            ->add('address',TextType::class, [
+            ->add('address', TextType::class, [
                 'label'       => 'Addresse postal :',
                 'required'    => true,
                 'attr'        => [
@@ -51,7 +51,7 @@ class UserType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                 ],
-            ])->add('zipcode',TextType::class, [
+            ])->add('zipcode', TextType::class, [
                 'label'       => 'Code Postal :',
                 'required'    => true,
                 'attr'        => [

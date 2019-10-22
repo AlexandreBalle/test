@@ -13,21 +13,21 @@ class SearchAnnounceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('minPrice',NumberType::class,[
+        $builder->add('minPrice', NumberType::class, [
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Prix Mini'
                 ],
             ])
-            ->add('maxPrice',NumberType::class,[
+            ->add('maxPrice', NumberType::class, [
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Prix Max'
                 ],
             ])
-            ->add('type',ChoiceType::class,[
+            ->add('type', ChoiceType::class, [
                 'required' => false,
                 'placeholder' => '----',
                 'attr' => [

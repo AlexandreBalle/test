@@ -11,13 +11,13 @@ class DateLocationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('startDateTime',DateTimeType::class, [
+        $builder->add('startDateTime', DateTimeType::class, [
             'label'       => 'Date de début',
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'attr' => ['class' => 'startDateTime'],
         ])
-        ->add('stopDateTime',DateTimeType::class, [
+        ->add('stopDateTime', DateTimeType::class, [
             'label'       => 'Date de fin',
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',

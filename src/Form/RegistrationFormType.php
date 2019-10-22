@@ -3,33 +3,33 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Component\Form\{
-    AbstractType, FormBuilderInterface
-};
-use Symfony\Component\Form\Extension\Core\Type\{
-    DateType, EmailType, IntegerType,
-    NumberType, PasswordType, TextType
-};
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\{
-    NotBlank, Length
-};
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email',EmailType::class,[
-                'attr' => [
-                    'class' => 'form-control',
+            ->add('email', EmailType::class, [
+                'attr'            => [
+                    'class'       => 'form-control',
                     'placeholder' => 'Email'
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
-                'attr' => [
-                    'class' => 'form-control',
+                'mapped'          => false,
+                'attr'            => [
+                    'class'       => 'form-control',
                     'placeholder' => 'Mot de passe'
                 ],
                 'constraints' => [
@@ -43,20 +43,20 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('lastname',TextType::class,[
+            ->add('lastname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Nom'
                 ],
             ])
-            ->add('firstname', TextType::class,[
+            ->add('firstname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Prénom'
 
                 ],
             ])
-            ->add('birthdayDate',DateType::class,[
+            ->add('birthdayDate', DateType::class, [
                 'attr' => [
                     'placeholder' => 'Date de naissance',
                     'class' => 'form-control',
@@ -64,13 +64,13 @@ class RegistrationFormType extends AbstractType
                 ],
                 'widget' => 'single_text'
             ])
-            ->add('address',TextType::class,[
+            ->add('address', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Adresse'
                 ],
             ])
-            ->add('zipcode',IntegerType::class,[
+            ->add('zipcode', IntegerType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Code Postal'
@@ -83,14 +83,14 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('city',TextType::class,[
+            ->add('city', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Ville'
 
                 ],
             ])
-            ->add('phone',NumberType::class,[
+            ->add('phone', NumberType::class, [
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Téléphone'

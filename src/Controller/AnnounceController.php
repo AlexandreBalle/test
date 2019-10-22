@@ -8,20 +8,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\{
-    RedirectResponse, Request, Response
-};
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-use App\Entity\{
-    Announce, Vehicle, Location
-};
-use App\Form\{AnnouncementType, DateLocationType, RentalType};
+use App\Entity\Announce;
+use App\Entity\User;
+use App\Entity\Vehicle;
+use App\Entity\Location;
+use App\Form\AnnouncementType;
+use App\Form\DateLocationType;
+use App\Form\RentalType;
 use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 
 
 /**
+ * Class AnnounceController
+ * @package App\Controller
  * @Route("/annonce")
  */
 class AnnounceController extends AbstractController
@@ -66,18 +71,19 @@ class AnnounceController extends AbstractController
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function detailAction(Request $request, Security $security, Announce $announce){
-        $form = $this->createForm(DateLocationType::class)
-                     ->handleRequest($request);
+        $form = $this->createForm(DateLocationType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $date       = $form->getData();
             $hours      = $this->diffHours($date['stopDateTime'],$date['startDateTime']);
             $priceTotal = round(($announce->getPrice() /24) * $hours,2);
             $priceTotal = $this->eurToCents($priceTotal);
-            if ($this->isGranted('ROLE_ADMIN')) {
+            if ($this->isGranted("ROLE_ADMIN")) {
                 $em         = $this->getDoctrine()->getManager();
+                /** @var User $user */
+                $user       = $security->getUser();
                 $location   = new Location();
-                $location->setUser($security->getUser())
+                $location->setUser($user)
                          ->setAnnounce($announce)
                          ->setStartDate($date['startDateTime'])
                          ->setEndDate($date['stopDateTime']);

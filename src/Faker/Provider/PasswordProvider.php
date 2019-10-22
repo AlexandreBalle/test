@@ -1,5 +1,6 @@
 <?php
 namespace App\Faker\Provider;
+
 use App\Entity\User;
 use Faker\Generator;
 use Faker\Provider\Base as BaseProvider;
@@ -21,6 +22,8 @@ final class PasswordProvider extends BaseProvider
             $user,
             $password
         );
+
         return $this->password;
     }
+
 }

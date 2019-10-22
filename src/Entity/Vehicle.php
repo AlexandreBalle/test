@@ -247,7 +247,8 @@ class Vehicle
         return $this;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->matriculation . " - ". $this->brand . " " . $this->model;
     }
 }
