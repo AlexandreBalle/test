@@ -190,14 +190,13 @@ class AnnounceController extends AbstractController
                             ->setKm($data['vehicle']['km'])
                             ->setYear(new \DateTime($data['vehicle']['year']))
                             ->setDoor(
-                                array_key_exists ('door', $data['vehicle']) ? $data['vehicle']['door'] : null
+                                array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null
                             )->setPlace(
                                 array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null
                             )->setAutonomy($data['vehicle']['autonomy'])
                             ->setUser($security->getUser())
-                            ->setPhoto(array_key_exists('photo', $data['vehicle']) ?
-                                $data['vehicle']['photo'] : $vehicle->getPhoto()
-                            );
+                            ->setPhoto(
+                                array_key_exists('photo', $data['vehicle']) ? $data['vehicle']['photo'] : $vehicle->getPhoto());
                     $em->persist($vehicle);
                 }
 
