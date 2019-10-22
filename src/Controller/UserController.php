@@ -12,11 +12,12 @@ use Nzo\UrlEncryptorBundle\Annotations\ParamDecryptor;
 use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
 
 /**
  * @Route("/user", name="user_")
@@ -34,9 +35,9 @@ class UserController extends AbstractController
      * @Route("/register", name="register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
-    public function register(Request $request,UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $formRegister = $this->createForm(RegistrationFormType::class, $user = new User());
         $formRegister->handleRequest($request);
@@ -65,7 +66,7 @@ class UserController extends AbstractController
     /**
      * @Route("/login", name="login")
      * @param AuthenticationUtils $authenticationUtils
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {
@@ -89,7 +90,8 @@ class UserController extends AbstractController
     public function history()
     {
         $userConnected = $this->getUser();
-        if(!empty($userConnected)) {
+
+        if (!empty($userConnected)) {
             $locationPast = $locationFutur = $locationDate = "";
             $idUserConnected = $userConnected->getId();
             $repository = $this->getDoctrine()->getRepository(Location::class);
@@ -109,10 +111,12 @@ class UserController extends AbstractController
 
     /**
      * @Route("/account", name="account")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function account(Request $request){
+    public function account(Request $request) {
         $userConnected = $this->getUser();
-        if(!empty($userConnected)){
+        if (!empty($userConnected)) {
             $idUser = $userConnected->getId();
             $repository = $this->getDoctrine()->getRepository(User::class);
             $infoUser = $repository->find($idUser);
@@ -120,7 +124,6 @@ class UserController extends AbstractController
             $formUser->handleRequest($request);
 
             if ($formUser->isSubmitted() && $formUser->isValid()) {
-
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
 
@@ -144,13 +147,17 @@ class UserController extends AbstractController
      * @Template("modal/_modal_comment.html.twig")
      * @param Request $request
      * @param $locationId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      * @throws \Exception
      * @ParamDecryptor(params={"locationId"})
      */
-    public function endLocation(Request $request, $locationId) {
+    public function endLocation(Request $request, $locationId)
+    {
         $commentForm  = $this->createForm(CommentType::class, null, [
-            'action' => $this->generateUrl('user_endLocation', [ 'locationId' => $this->encryptor->encrypt($locationId)]),
+            'action' => $this->generateUrl(
+                'user_endLocation',
+                [ 'locationId' => $this->encryptor->encrypt($locationId)]
+            ),
             'method' => 'POST'
         ])->handleRequest($request);
 

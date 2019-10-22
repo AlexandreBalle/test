@@ -22,11 +22,11 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
-    public function getLocationPast($idUser){ //date de fin déjà passé
-
+    public function getLocationPast($idUser)
+    {
         $qb = $this->createQueryBuilder('l');
-        $qb
-            ->select('l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model, v.matriculation, DATE_DIFF(l.endDate, l.startDate) AS dateDiff, l.returned_at')
+        $qb->select('l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model, v.matriculation,
+            DATE_DIFF(l.endDate, l.startDate) AS dateDiff, l.returned_at')
             ->innerJoin(Announce::class, 'a', Join::WITH, 'a.id = l.announce')
             ->innerJoin(Vehicle::class, 'v', Join::WITH, 'v.id = a.vehicle')
             ->where('l.returned = true')
@@ -36,11 +36,11 @@ class LocationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getArrayResult();
     }
 
-    public function getLocationFutur($idUser){ //date de début dans le futur
-
+    public function getLocationFutur($idUser)
+    {
         $qb = $this->createQueryBuilder('l');
-        $qb
-            ->select('l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model, v.matriculation, DATE_DIFF(l.endDate, l.startDate) AS dateDiff')
+        $qb->select('l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model,
+             v.matriculation, DATE_DIFF(l.endDate, l.startDate) AS dateDiff')
             ->innerJoin(Announce::class, 'a', Join::WITH, 'a.id = l.announce')
             ->innerJoin(Vehicle::class, 'v', Join::WITH, 'v.id = a.vehicle')
             ->where('l.startDate > CURRENT_DATE()')
@@ -50,11 +50,11 @@ class LocationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getArrayResult();
     }
 
-    public function getLocationDate($idUser){
-
+    public function getLocationDate($idUser)
+    {
         $qb = $this->createQueryBuilder('l');
-        $qb
-            ->select('l.id as id, l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model, DATE_DIFF(l.endDate, l.startDate) AS dateDiff, l.returned')
+        $qb->select('l.id as id, l.startDate, l.endDate, a.city, a.address, a.price, v.brand, v.model,
+             DATE_DIFF(l.endDate, l.startDate) AS dateDiff, l.returned')
             ->innerJoin(Announce::class, 'a', Join::WITH, 'a.id = l.announce')
             ->innerJoin(Vehicle::class, 'v', Join::WITH, 'v.id = a.vehicle')
             ->where('CURRENT_DATE() > l.startDate AND l.returned != true')

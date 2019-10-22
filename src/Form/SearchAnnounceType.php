@@ -38,7 +38,8 @@ class SearchAnnounceType extends AbstractType
         ;
     }
 
-    public function getChoices() {
+    public function getChoices()
+    {
         $array = [];
 
         foreach (Vehicle::$types as $type) {

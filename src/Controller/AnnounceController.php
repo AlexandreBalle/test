@@ -23,7 +23,6 @@ use App\Form\DateLocationType;
 use App\Form\RentalType;
 use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 
-
 /**
  * Class AnnounceController
  * @package App\Controller
@@ -70,13 +69,13 @@ class AnnounceController extends AbstractController
      * @return Response
      * @throws \Stripe\Exception\ApiErrorException
      */
-    public function detailAction(Request $request, Security $security, Announce $announce){
+    public function detailAction(Request $request, Security $security, Announce $announce) {
         $form = $this->createForm(DateLocationType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $date       = $form->getData();
-            $hours      = $this->diffHours($date['stopDateTime'],$date['startDateTime']);
-            $priceTotal = round(($announce->getPrice() /24) * $hours,2);
+            $hours      = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
+            $priceTotal = round(($announce->getPrice() /24) * $hours, 2);
             $priceTotal = $this->eurToCents($priceTotal);
             if ($this->isGranted("ROLE_ADMIN")) {
                 $em         = $this->getDoctrine()->getManager();
@@ -97,7 +96,8 @@ class AnnounceController extends AbstractController
                 $session = Session::create([
                     'payment_method_types' => ['card'],
                     'line_items' => [[
-                        'name'        => $announce->getVehicle()->getBrand() . " " . $announce->getVehicle()->getModel(),
+                        'name'        => $announce->getVehicle()->getBrand()
+                                 . " " . $announce->getVehicle()->getModel(),
                         'description' => $announce->getDescription(),
                         'amount'      => $priceTotal,
                         'currency'    => 'eur',
@@ -171,13 +171,7 @@ class AnnounceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            if ($this->isCsrfTokenValid(
-                    'announcement_item',
-                    $request->request->get('announcement')['_token']
-                ) && $this->isCsrfTokenValid(
-                    'rental_item',
-                    $data['vehicle']['_token']
-                )) {
+            if ($this->isCsrfTokenValid('announcement_item', $request->request->get('announcement')['_token']) && $this->isCsrfTokenValid('rental_item', $data['vehicle']['_token'])) {
                 $em       = $this->getDoctrine()->getManager();
                 $announce = new Announce();
 
@@ -225,14 +219,14 @@ class AnnounceController extends AbstractController
     }
 
 
-    private function diffHours(\DateTime $dt2, \DateTime $dt1){
+    private function diffHours(\DateTime $dt2, \DateTime $dt1) {
         $diff  = $dt2->diff($dt1);
         $hours = $diff->h;
         $hours = $hours + ($diff->days*24);
         return $hours;
     }
 
-    private function eurToCents($price){
+    private function eurToCents($price) {
         return $price * 100;
     }
 }

@@ -25,5 +25,4 @@ final class PasswordProvider extends BaseProvider
 
         return $this->password;
     }
-
 }

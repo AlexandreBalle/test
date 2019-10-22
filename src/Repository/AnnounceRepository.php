@@ -20,6 +20,7 @@ class AnnounceRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $value
      * @return Announce[] Returns an array of Announce objects
      */
     public function findForSearch($value)
@@ -32,18 +33,18 @@ class AnnounceRepository extends ServiceEntityRepository
         if ($value['type'] != null) {
             $search->innerJoin('a.vehicle', 'v')
                    ->andWhere('v.type = :type')
-                   ->setParameter('type',$value['type'])
+                   ->setParameter('type', $value['type'])
             ;
         }
 
         if ($value['minPrice'] != null) {
             $search->andWhere('a.price >= :priceMini')
-                   ->setParameter('priceMini',$value['minPrice'])
+                   ->setParameter('priceMini', $value['minPrice'])
             ;
         }
         if ($value['maxPrice'] != null) {
             $search->andWhere('a.price <= :maxPrice')
-                   ->setParameter('maxPrice',$value['maxPrice'])
+                   ->setParameter('maxPrice', $value['maxPrice'])
             ;
         }
 
@@ -51,6 +52,7 @@ class AnnounceRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $value
      * @return Announce[] Returns an array of Announce objects
      */
     public function findForSearchSwipe($value)
@@ -62,17 +64,17 @@ class AnnounceRepository extends ServiceEntityRepository
         if ($value['type'] != null) {
             $search->innerJoin('a.vehicle', 'v')
                    ->andWhere('v.type = :type')
-                   ->setParameter('type',$value['type'])
+                   ->setParameter('type', $value['type'])
             ;
         }
         if ($value['minPrice'] != null) {
             $search->andWhere('a.price >= :priceMini')
-                   ->setParameter('priceMini',$value['minPrice'])
+                   ->setParameter('priceMini', $value['minPrice'])
             ;
         }
         if ($value['maxPrice'] != null) {
             $search->andWhere('a.price <= :maxPrice')
-                   ->setParameter('maxPrice',$value['maxPrice'])
+                   ->setParameter('maxPrice', $value['maxPrice'])
             ;
         }
 
