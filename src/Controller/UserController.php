@@ -114,7 +114,8 @@ class UserController extends AbstractController
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function account(Request $request) {
+    public function account(Request $request)
+    {
         $userConnected = $this->getUser();
         if (!empty($userConnected)) {
             $idUser = $userConnected->getId();

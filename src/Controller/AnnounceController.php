@@ -69,7 +69,8 @@ class AnnounceController extends AbstractController
      * @return Response
      * @throws \Stripe\Exception\ApiErrorException
      */
-    public function detailAction(Request $request, Security $security, Announce $announce) {
+    public function detailAction(Request $request, Security $security, Announce $announce)
+    {
         $form = $this->createForm(DateLocationType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -171,7 +172,8 @@ class AnnounceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            if ($this->isCsrfTokenValid('announcement_item', $request->request->get('announcement')['_token']) && $this->isCsrfTokenValid('rental_item', $data['vehicle']['_token'])) {
+            if ($this->isCsrfTokenValid('announcement_item', $request->request->get('announcement')['_token'])
+                && $this->isCsrfTokenValid('rental_item', $data['vehicle']['_token'])) {
                 $em       = $this->getDoctrine()->getManager();
                 $announce = new Announce();
 
@@ -187,10 +189,10 @@ class AnnounceController extends AbstractController
                             ->setMatriculation($data['vehicle']['matriculation'])
                             ->setKm($data['vehicle']['km'])
                             ->setYear(new \DateTime($data['vehicle']['year']))
-                            ->setDoor(array_key_exists ('door', $data['vehicle']) ?
-                                $data['vehicle']['door'] : null
-                            )->setPlace(array_key_exists('place', $data['vehicle']) ?
-                                $data['vehicle']['door'] : null
+                            ->setDoor(
+                                array_key_exists ('door', $data['vehicle']) ? $data['vehicle']['door'] : null
+                            )->setPlace(
+                                array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null
                             )->setAutonomy($data['vehicle']['autonomy'])
                             ->setUser($security->getUser())
                             ->setPhoto(array_key_exists('photo', $data['vehicle']) ?
@@ -213,20 +215,23 @@ class AnnounceController extends AbstractController
                 return $this->redirectToRoute("home");
             }
         }
-       $form = $form->createView();
+
+        $form = $form->createView();
 
         return compact('form');
     }
 
 
-    private function diffHours(\DateTime $dt2, \DateTime $dt1) {
+    private function diffHours(\DateTime $dt2, \DateTime $dt1)
+    {
         $diff  = $dt2->diff($dt1);
         $hours = $diff->h;
         $hours = $hours + ($diff->days*24);
         return $hours;
     }
 
-    private function eurToCents($price) {
+    private function eurToCents($price)
+    {
         return $price * 100;
     }
 }
