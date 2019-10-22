@@ -93,12 +93,12 @@ class Location
         return $this;
     }
 
-    public function getAnnounce(): ?announce
+    public function getAnnounce(): ?Announce
     {
         return $this->announce;
     }
 
-    public function setAnnounce(?announce $announce): self
+    public function setAnnounce(?Announce $announce): self
     {
         $this->announce = $announce;
 

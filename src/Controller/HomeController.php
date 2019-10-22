@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\AnnounceRepository;
+use App\Repository\LocationRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +27,11 @@ class HomeController extends AbstractController
     public function index(Request $request)
     {
         $em           = $this->getDoctrine()->getManager();
+        /** @var AnnounceRepository $repoAnnounce */
         $repoAnnounce = $em->getRepository(Announce::class);
+        /** @var LocationRepository $repoLocation */
         $repoLocation = $em->getRepository(Location::class);
+        /** @var UserRepository $repoUser */
         $repoUser     = $em->getRepository(User::class);
         $searchForm   = $this->createForm(SearchAnnounceType::class, null, [
             'action' => $this->generateUrl('home'),
@@ -72,7 +78,7 @@ class HomeController extends AbstractController
      * @Route("/eSwipe", name="eSwipe")
      * @Template("modal/_modal-form-e-swip.html.twig")
      * @param Request $request
-     * @return Response
+     * @return array|Response
      */
     public function eSwipe(Request $request)
     {
@@ -83,11 +89,12 @@ class HomeController extends AbstractController
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $em           = $this->getDoctrine()->getManager();
+            /** @var AnnounceRepository $repoAnnounce */
+            $repoAnnounce = $em->getRepository(Announce::class);
 
             return $this->render('announce/swipe.html.twig', [
                 "searchForm" => $searchForm->createView(),
-                "annonces"   => $em->getRepository(Announce::class)
-                                   ->findForSearchSwipe($searchForm->getData())
+                "annonces"   => $repoAnnounce->findForSearchSwipe($searchForm->getData())
             ]);
         }
 
@@ -100,10 +107,9 @@ class HomeController extends AbstractController
      * @Route("/vehicle/description/{announceId}", name="vehicleDescription")
      * @Template("modal/_modal-swipe.html.twig")
      * @param int $announceId
-     * @param Request $request
-     * @return Response
+     * @return array
      */
-    public function vehicleDescription(int $announceId, Request $request)
+    public function vehicleDescription(int $announceId)
     {
         $em       = $this->getDoctrine()->getManager();
         $announce = $em->getRepository(Announce::class)->find($announceId);

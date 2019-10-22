@@ -310,12 +310,12 @@ class User implements UserInterface
 
     public function getMail(): ?string
     {
-        return $this->mail;
+        return $this->email;
     }
 
     public function setMail(?string $mail): self
     {
-        $this->mail = $mail;
+        $this->email = $mail;
 
         return $this;
     }

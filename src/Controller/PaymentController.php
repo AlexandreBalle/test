@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Location;
+use App\Repository\LocationRepository;
 use Nzo\UrlEncryptorBundle\Annotations\ParamDecryptor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentController extends AbstractController
@@ -42,18 +45,19 @@ class PaymentController extends AbstractController
 
     /**
      * @Route("/payment/success/{locationId}", name="successPayment")
-     * @param \Swift_Mailer $mailer
-     * @param $locationId
-     * @return \Symfony\Component\HttpFoundation\Response
      * @ParamDecryptor(params={"locationId"})
+     * @param \Swift_Mailer $mailer
+     * @param string $locationId
+     * @return RedirectResponse|Response
      */
-    public function successPayment(\Swift_Mailer $mailer, $locationId)
+    public function successPayment(\Swift_Mailer $mailer, string $locationId)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em           = $this->getDoctrine()->getManager();
+        /** @var LocationRepository $repoLocation */
+        $repoLocation = $em->getRepository(Location::class);
 
-        if ($location = $em->getRepository(Location::class)
-                           ->find($locationId)
-        ) {
+        /** @var Location $location */
+        if ($location = $repoLocation->find($locationId)) {
             $message = (new \Swift_Message('E-motion: Paiement effectuée'))
                 ->setFrom('admin@e-motion.fr')
                 ->setTo($location->getUser()->getEmail())

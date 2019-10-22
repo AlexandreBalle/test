@@ -21,7 +21,7 @@ class AnnounceRepository extends ServiceEntityRepository
 
     /**
      * @param $value
-     * @return Announce[] Returns an array of Announce objects
+     * @return mixed
      */
     public function findForSearch($value)
     {
@@ -53,7 +53,7 @@ class AnnounceRepository extends ServiceEntityRepository
 
     /**
      * @param $value
-     * @return Announce[] Returns an array of Announce objects
+     * @return mixed
      */
     public function findForSearchSwipe($value)
     {
@@ -83,7 +83,7 @@ class AnnounceRepository extends ServiceEntityRepository
 
     /**
      * @param $type
-     * @return Announce[] Returns an array of Announce objects
+     * @return mixed
      */
     public function findByVehicleType($type)
     {

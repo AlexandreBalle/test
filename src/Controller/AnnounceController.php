@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Form\SearchAnnounceType;
+use App\Repository\AnnounceRepository;
+use App\Repository\VehicleRepository;
+use DoctrineMigrations\Version20190916130741;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stripe\Checkout\Session;
@@ -45,6 +48,7 @@ class AnnounceController extends AbstractController
     public function index(Request $request): Response
     {
         $em           = $this->getDoctrine();
+        /** @var AnnounceRepository $repoAnnounce */
         $repoAnnounce = $em->getRepository(Announce::class);
         $searchForm   = $this->createForm(SearchAnnounceType::class)
                              ->handleRequest($request);
@@ -132,7 +136,7 @@ class AnnounceController extends AbstractController
      * )
      * @Template("announce/rental.html.twig")
      * @param Request $request
-     * @return RedirectResponse|Response
+     * @return array
      */
     public function addVehicleAction(Request $request)
     {
@@ -158,7 +162,7 @@ class AnnounceController extends AbstractController
      * @Template("announce/partials/_announcement.html.twig")
      * @param Request $request
      * @param Security $security
-     * @return RedirectResponse|Response
+     * @return array|RedirectResponse
      * @throws \Exception
      */
     public function addAnnouncementAction(Request $request, Security $security)
@@ -174,14 +178,19 @@ class AnnounceController extends AbstractController
 
             if ($this->isCsrfTokenValid('announcement_item', $request->request->get('announcement')['_token'])
                 && $this->isCsrfTokenValid('rental_item', $data['vehicle']['_token'])) {
-                $em       = $this->getDoctrine()->getManager();
-                $announce = new Announce();
+                $em          = $this->getDoctrine()->getManager();
+                $announce    = new Announce();
+                /** @var VehicleRepository $repoVehicle */
+                $repoVehicle = $em->getRepository(Vehicle::class);
 
-                if (!$vehicle = $em->getRepository(Vehicle::class)->findOneBy([
+                /** @var Vehicle $vehicle */
+                if (!$vehicle = $repoVehicle->findOneBy([
                     'matriculation' => $data['vehicle']['matriculation'],
                     'user'          => $security->getUser(),
                     'type'          => $data['vehicle']['type'],
                 ])) {
+                    /** @var User $user */
+                    $user     = $security->getUser();
                     $door     = array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null;
                     $place    = array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null;
                     $photo    = array_key_exists('photo', $data['vehicle']) ?
@@ -196,7 +205,7 @@ class AnnounceController extends AbstractController
                             ->setDoor($door)
                             ->setPlace($place)
                             ->setAutonomy($data['vehicle']['autonomy'])
-                            ->setUser($security->getUser())
+                            ->setUser($user)
                             ->setPhoto($photo);
                     $em->persist($vehicle);
                 }

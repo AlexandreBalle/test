@@ -57,24 +57,31 @@ class Comment
     }
 
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getAnnounce(): ?announce
+    /**
+     * @return Announce|null
+     */
+    public function getAnnounce(): ?Announce
     {
         return $this->announce;
     }
 
-    public function setAnnounce(?announce $announce): self
+    /**
+     * @param Announce|null $announce
+     * @return $this
+     */
+    public function setAnnounce(?Announce $announce): self
     {
         $this->announce = $announce;
 
