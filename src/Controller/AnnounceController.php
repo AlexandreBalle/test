@@ -182,6 +182,10 @@ class AnnounceController extends AbstractController
                     'user'          => $security->getUser(),
                     'type'          => $data['vehicle']['type'],
                 ])) {
+                    $door     = array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null;
+                    $place    = array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null;
+                    $photo    = array_key_exists('photo', $data['vehicle']) ?
+                                $data['vehicle']['photo'] : $vehicle->getPhoto();
                     $vehicle  = new Vehicle();
                     $vehicle->setType($data['vehicle']['type'])
                             ->setModel($data['vehicle']['model'])
@@ -189,14 +193,11 @@ class AnnounceController extends AbstractController
                             ->setMatriculation($data['vehicle']['matriculation'])
                             ->setKm($data['vehicle']['km'])
                             ->setYear(new \DateTime($data['vehicle']['year']))
-                            ->setDoor(
-                                array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null
-                            )->setPlace(
-                                array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null
-                            )->setAutonomy($data['vehicle']['autonomy'])
+                            ->setDoor($door)
+                            ->setPlace($place)
+                            ->setAutonomy($data['vehicle']['autonomy'])
                             ->setUser($security->getUser())
-                            ->setPhoto(
-                                array_key_exists('photo', $data['vehicle']) ? $data['vehicle']['photo'] : $vehicle->getPhoto());
+                            ->setPhoto($photo);
                     $em->persist($vehicle);
                 }
 
