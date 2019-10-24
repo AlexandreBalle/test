@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Form\SearchAnnounceType;
 use App\Repository\AnnounceRepository;
 use App\Repository\VehicleRepository;
-use DoctrineMigrations\Version20190916130741;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stripe\Checkout\Session;
@@ -79,49 +78,64 @@ class AnnounceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $date       = $form->getData();
-            $hours      = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
-            $priceTotal = round(($announce->getPrice() /24) * $hours, 2);
-            $priceTotal = $this->eurToCents($priceTotal);
-            if ($this->isGranted("ROLE_ADMIN")) {
-                $em         = $this->getDoctrine()->getManager();
-                /** @var User $user */
-                $user       = $security->getUser();
-                $location   = new Location();
-                $location->setUser($user)
-                         ->setAnnounce($announce)
-                         ->setStartDate($date['startDateTime'])
-                         ->setEndDate($date['stopDateTime']);
 
-                $em->persist($location);
-                $em->flush();
+            if ($this->isCsrfTokenValid('location_item', $request->request->get('date_location')['_token'])) {
+                $hours      = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
+                $price      = round(($announce->getPrice() /24) * $hours, 2);
 
-                $stripe = new Stripe();
-                $stripe::setApiKey('sk_test_jWWKdFyljvdnfJbjevs74kQH000tfdnAdA');
+                if ($form->get('reduction')->isClicked()) {
+                    $price -= 5;
+                }
 
-                $session = Session::create([
-                    'payment_method_types' => ['card'],
-                    'line_items' => [[
-                        'name'        => $announce->getVehicle()->getBrand()
-                                 . " " . $announce->getVehicle()->getModel(),
-                        'description' => $announce->getDescription(),
-                        'amount'      => $priceTotal,
-                        'currency'    => 'eur',
-                        'quantity'    => 1,
-                    ]],
-                    'success_url' => 'http://127.0.0.1:8000'. $this->generateUrl('successPayment', [
-                        'locationId' => $this->encryptor->encrypt($location->getId())
-                    ]),
-                    'cancel_url' => 'https://example.com/cancel',
-                ]);
+                $priceTotal = $this->eurToCents($price);
 
-                return $this->render('payment/index.html.twig', [
-                    'controller_name' => 'PaymentController',
-                    'sessionId' => $session['id']
-                ]);
-            } else {
-                return $this->redirectToRoute('user_login');
+                if ($this->isGranted("IS_AUTHENTICATED_FULLY")) {
+                    $em         = $this->getDoctrine()->getManager();
+                    /** @var User $user */
+                    $user       = $security->getUser();
+                    $location   = new Location();
+                    $location->setUser($user)
+                             ->setAnnounce($announce)
+                             ->setStartDate($date['startDateTime'])
+                             ->setEndDate($date['stopDateTime'])
+                             ->setPricePaid($price);
+
+                    if ($form->get('reduction')->isClicked()) {
+                        $user->setLoyaltyPoints($this->getLoyaltyPoint($user));
+                    }
+
+                    $em->persist($location);
+                    $em->flush();
+
+                    $stripe = new Stripe();
+                    $stripe::setApiKey('sk_test_jWWKdFyljvdnfJbjevs74kQH000tfdnAdA');
+
+                    $session = Session::create([
+                        'payment_method_types' => ['card'],
+                        'line_items' => [[
+                            'name'        => $announce->getVehicle()->getBrand()
+                                     . " " . $announce->getVehicle()->getModel(),
+                            'description' => $announce->getDescription(),
+                            'amount'      => $priceTotal,
+                            'currency'    => 'eur',
+                            'quantity'    => 1,
+                        ]],
+                        'success_url' => 'http://127.0.0.1:8000'. $this->generateUrl('successPayment', [
+                            'locationId' => $this->encryptor->encrypt($location->getId())
+                        ]),
+                        'cancel_url' => 'https://example.com/cancel',
+                    ]);
+
+                    return $this->render('payment/index.html.twig', [
+                        'controller_name' => 'PaymentController',
+                        'sessionId' => $session['id']
+                    ]);
+                } else {
+                    return $this->redirectToRoute('user_login');
+                }
             }
         }
+
         return $this->render('announce/detail.html.twig', [
             "annonce" => $announce,
             "form" => $form->createView()
@@ -182,20 +196,22 @@ class AnnounceController extends AbstractController
                 $announce    = new Announce();
                 /** @var VehicleRepository $repoVehicle */
                 $repoVehicle = $em->getRepository(Vehicle::class);
+                /** @var User $user */
+                $user        = $security->getUser();
 
                 /** @var Vehicle $vehicle */
                 if (!$vehicle = $repoVehicle->findOneBy([
                     'matriculation' => $data['vehicle']['matriculation'],
-                    'user'          => $security->getUser(),
+                    'user'          => $user,
                     'type'          => $data['vehicle']['type'],
                 ])) {
-                    /** @var User $user */
-                    $user     = $security->getUser();
+
+                    $vehicle  = new Vehicle();
                     $door     = array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null;
                     $place    = array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null;
                     $photo    = array_key_exists('photo', $data['vehicle']) ?
                                 $data['vehicle']['photo'] : $vehicle->getPhoto();
-                    $vehicle  = new Vehicle();
+
                     $vehicle->setType($data['vehicle']['type'])
                             ->setModel($data['vehicle']['model'])
                             ->setBrand($data['vehicle']['brand'])
@@ -210,11 +226,11 @@ class AnnounceController extends AbstractController
                     $em->persist($vehicle);
                 }
 
-                $announce->setUser($security->getUser())
+                $announce->setUser($user)
                          ->setAddress($data['address'])
                          ->setCity($data['city'])
                          ->setDescription($data['description'])
-                         ->setEnable(false)
+                         ->setEnable(true)
                          ->setPrice($data['price'])
                          ->setZipcode($data['zipcode'])
                          ->setVehicle($vehicle);
@@ -242,5 +258,17 @@ class AnnounceController extends AbstractController
     private function eurToCents($price)
     {
         return $price * 100;
+    }
+
+    /**
+     * @param User $user
+     * @return int|mixed
+     */
+    public function getLoyaltyPoint(User $user)
+    {
+        $loyaltyPoints = $user->getLoyaltyPoints();
+        $loyaltyPoints -= 100;
+
+        return $loyaltyPoints;
     }
 }

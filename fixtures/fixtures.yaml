@@ -26,7 +26,7 @@ App\Entity\User:
     photo: "image-not-found.png"
     email: "admin@admin.fr"
     phone: <phoneNumber()>
-    loyaltyPoints: <numberBetween(0, 700)>
+    loyaltyPoints: 0
     password: "<passwordGenerator(admin)>"
     roles: "[ROLE_ADMIN]"
 
@@ -50,7 +50,7 @@ App\Entity\Announce:
     user: "@user<numberBetween(1,20)>"
     address: <streetAddress()>
     price: <numberBetween( 0, 80)>
-    zipcode: <postcode()>
+    zipcode: <numberBetween(10000, 90000)>
     city: <city()>
     description: <paragraph( 3, true)>
     enable: boolean(80)

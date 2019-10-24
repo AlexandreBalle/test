@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h3>Contrat de location</h3>
+            <p>Utilisateurs : {{ location.user.fullName }}</p>
+            <p>Adresse : {{ location.user.fullAddress }}</p>
+        </div>
+        <p>
+            <h3>1.1 – Nature et date d’effet du contrat</h3>
+            Le loueur met à disposition du locataire, un véhicule de marque {{ location.vehicle.brand }}, immatriculé {{ location.vehicle.matriculation }}, à titre onéreux et à compter du {{ "now"|date('Y-m-d') }}.
+
+            Kilométrage du véhicule : {{ location.vehicle.km }} kms
+            Le locataire certifie être en possession du permis l’autorisant à conduire le présent véhicule.
+        </p>
+        <br>
+        <p>
+            <h3>1.2 – État du véhicule</h3>
+            Lors de la remise du véhicule et lors de sa restitution, un procès-verbal de l’état du véhicule sera établi entre le locataire et le loueur.
+
+            Le véhicule devra être restitué le même état que lors de sa mise à disposition au locataire. Toutes les détériorations sur le véhicule constatées sur le PV de sortie seront à la charge du locataire.
+        </p>
+        <br>
+        <p>
+            <h3>1.3 – Prix de la location du véhicule</h3>
+            Les parties s’entendent sur un prix de location {{ location.pricePaid }} euros par jour (calendaires).
+        </p>
+        <br>
+        <p>
+            <h3>1.4 – Kilométrage supplémentaires</h3>
+            Tout kilomètre réalisé au-delà du forfait indiqué à l’article 1.3 du présent contrat sera facturé au prix de {{ location.announce.price }} euros * le nb de jours supplémentaires.
+        </p>
+        <br>
+        <p>
+            <h3>1.5 – Durée et restitution du véhicule</h3>
+            Le contrat est à durée indéterminée (à défaut préciser les dates et la durée en jours calendaires). Il pourra y être mis fin par chacune des parties à tout moment en adressant un courrier recommandé en respectant un préavis d’un mois.
+        </p>
+        <br>
+        <p>
+            <h3>1.6 – Autres éléments et accessoires</h3>
+            Le locataire prendra en charge l’ensemble des charges afférentes à la mise à disposition du véhicule :
+
+            <ul class="list-group">
+                <li class="list-group-item">Frais d’entretien du véhicule,</li>
+                <li class="list-group-item">Impôts et taxes liés au véhicule,</li>
+                <li class="list-group-item">Les frais d’essence,</li>
+                <li class="list-group-item">L’assurance du véhicule.</li>
+            </ul>
+        </p>
+        <br>
+        <p>
+            <h3>1.7 – Clause en cas de litige</h3>
+            Les parties conviennent expressément que tout litige pouvant naître de l’exécution du présent contrat relèvera de la compétence du tribunal de commerce.
+        </p>
+        <br>
+        <p>
+            Fait le {{ "now"|date('Y-m-d') }}, <br>
+            E-motion
+        </p>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

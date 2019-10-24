@@ -71,11 +71,24 @@
                                             </div>
                                         </div>
                                     <hr>
+                                    {{ form_row(form._token) }}
                                     <p>Prix Total : <span id="prixTotal"></span> €</p>
                                     <hr>
-                                    <input type="submit" value="Payer" class="btn btn-lg btn-primary text-uppercase">
-                                    {{ form_end(form) }}
-
+                                    <div class="row">
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                            {% if app.user.LoyaltyPoints > 100 %}
+                                                <div class="col-lg-6 col-md-6 col-sm-6" style="border-right: 1px #1b1e21">
+                                                    {{ form_widget(form.reduction, { 'label': 'Remise de 5€' }) }}
+                                                    <p style="font-size: 13px; color: red">Vous beneficiez d'une remise de 5€ pour 100 points de fidélité</p>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            {{ form_widget(form.pay, { 'label': 'Payer' }) }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    {{ form_end(form, {'render_rest': false}) }}
                                 </dl>  <!-- item-property .// -->
                             </div> <!-- col.// -->
 

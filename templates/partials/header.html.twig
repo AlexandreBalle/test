@@ -6,6 +6,10 @@
     </div>
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
+            <li><a href="#" onclick="doGTranslate('fr|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="English" /></a>
+                <a href="#" onclick="doGTranslate('fr|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="French" /></a>
+                <a href="#" onclick="doGTranslate('fr|es');return false;" title="Spanish" class="gflag nturl" style="background-position:-600px -200px;"><img src="//gtranslate.net/flags/blank.png" height="16" width="16" alt="Spanish" /></a>
+            </li>
             <li class="nav-item border-warning border rounded mr-2">
                 <a class="nav-link text-warning " href="{{ path('vehicleAnnounce') }}">Louer mon vehicule</a>
             </li>
@@ -14,7 +18,9 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user-circle"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="width:12rem">
+                    <span class="dropdown-item-text">Fidélité : {{ app.user.LoyaltyPoints }} points</span>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('user_account') }}">Mon compte</a>
                     <a class="dropdown-item" href="{{ path('user_history') }}">Historique</a>
                     <div class="dropdown-divider"></div>

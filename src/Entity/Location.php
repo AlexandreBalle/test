@@ -30,6 +30,11 @@ class Location
      */
     private $announce;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Vehicle", inversedBy="vehicles")
+     * @JoinColumn(name="vehicle_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $vehicle;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,6 +45,11 @@ class Location
      * @ORM\Column(type="datetime")
      */
     private $endDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pricePaid;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -101,6 +111,7 @@ class Location
     public function setAnnounce(?Announce $announce): self
     {
         $this->announce = $announce;
+        $this->vehicle  = $announce->getVehicle();
 
         return $this;
     }
@@ -143,6 +154,43 @@ class Location
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPricePaid()
+    {
+        return $this->pricePaid;
+    }
+
+    /**
+     * @param mixed $pricePaid
+     * @return Location
+     */
+    public function setPricePaid($pricePaid): self
+    {
+        $this->pricePaid = $pricePaid;
+
+        return $this;
+    }
+
+    /**
+     * @return Vehicle
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
+
+    /**
+     * @param Vehicle $vehicle
+     * @return Location
+     */
+    public function setVehicle(Vehicle $vehicle): self
+    {
+        $this->vehicle = $vehicle;
+
+        return $this;
+    }
 
     public function __toString()
     {

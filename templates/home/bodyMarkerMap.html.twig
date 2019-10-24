@@ -1,0 +1,4 @@
+<p>{{ announce.vehicle.brand }} {{ announce.vehicle.model }}</p>
+<img src="{{ asset('uploads/' ~announce.vehicle.photo) }}" alt="">
+<p>Prix : <span>{{ announce.price }} € </span></p>
+<a href="{{ path('detail_announce', {id : announce.id}) }}" target="_blank" class="btn btn-primary"> Reserver</a>

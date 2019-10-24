@@ -473,6 +473,14 @@ class User implements UserInterface
         $this->loyaltyPoints = $loyaltyPoints;
     }
 
+    public function getFullName() {
+        return $this->lastname . " ". $this->firstname;
+    }
+
+    public function getFullAddress() {
+        return $this->address . ", ". $this->zipcode . " " . $this->city;
+    }
+
     public function __toString()
     {
         return $this->lastname . " ". $this->firstname;

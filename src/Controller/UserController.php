@@ -153,11 +153,12 @@ class UserController extends AbstractController
      * @Template("modal/_modal_comment.html.twig")
      * @ParamDecryptor(params={"locationId"})
      * @param Request $request
+     * @param \Swift_Mailer $mailer
      * @param string $locationId
      * @return array|RedirectResponse
      * @throws \Exception
      */
-    public function endLocation(Request $request, string $locationId)
+    public function endLocation(Request $request, \Swift_Mailer $mailer, string $locationId)
     {
         $commentForm  = $this->createForm(CommentType::class, null, [
             'action' => $this->generateUrl(
@@ -188,6 +189,25 @@ class UserController extends AbstractController
                          ->setReturnedAt(new \DateTime());
                 $em->persist($location);
                 $em->flush();
+
+                if ($location->getReturnedAt() > $location->getEndDate()) {
+                    $message = (new \Swift_Message('[ALERT]E-motion: Vehicule rendu en retard'))
+                        ->setFrom('admin@e-motion.fr')
+                        ->setTo('admin@e-motion.fr')
+                        ->setBody(
+                            $this->renderView(
+                                'user/partials/_email.html.twig',
+                                [
+                                    'user'    => $location->getUser(),
+                                    'vehicle' => $location->getAnnounce()->getVehicle()
+                                ]
+                            ),
+                            'text/html'
+                        )
+                    ;
+
+                    $mailer->send($message);
+                }
             }
 
             return $this->redirectToRoute('user_history');
