@@ -138,7 +138,7 @@ class HomeController extends AbstractController
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $responseJson = curl_exec($ch);
             curl_close($ch);
-            $response     = json_decode($responseJson);
+            $response     = json_decode(is_string($responseJson) ? $responseJson : "");
 
             if ($response->status == 'OK') {
                 $latitude              = $response->results[0]->geometry->location->lat;

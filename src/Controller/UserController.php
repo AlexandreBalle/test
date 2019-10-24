@@ -173,13 +173,12 @@ class UserController extends AbstractController
             $em           = $this->getDoctrine()->getManager();
             $repoLocation = $em->getRepository(Location::class);
 
-            /** @var Location|null $location */
+            /** @var Location $location */
             if ($location = $repoLocation->find($locationId)) {
                 if ($content = $commentForm->get('comment')->getData()) {
                     /** @var User $user */
                     $user    = $this->getUser();
                     $comment = new Comment();
-                    /** @var Location $location */
                     $comment->setAnnounce($location->getAnnounce())
                             ->setUser($user)
                             ->setRate($request->request->get('rate'))
