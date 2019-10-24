@@ -134,17 +134,9 @@ class PaymentController extends AbstractController
         $pdf = new Dompdf($pdfOptions);
 
         if ($type == "facture") {
-            $html = $this->renderView(
-                'payment/partials/_facture.html.twig', [
-                    'location' => $location
-                ]
-            );
+            $html = $this->renderView('payment/partials/_facture.html.twig', ['location' => $location]);
         } elseif ($type == "contrat") {
-            $html = $this->renderView(
-                'payment/partials/_contrat.html.twig', [
-                    'location' => $location
-                ]
-            );
+            $html = $this->renderView('payment/partials/_contrat.html.twig', ['location' => $location]);
         }
 
         $pdf->loadHtml($html);
