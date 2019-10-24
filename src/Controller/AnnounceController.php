@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,11 +81,12 @@ class AnnounceController extends AbstractController
             $date       = $form->getData();
 
             if ($this->isCsrfTokenValid('location_item', $request->request->get('date_location')['_token'])) {
-                $hours      = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
-                $price      = round(($announce->getPrice() /24) * $hours, 2);
-                $btnReduc   = $form->get('reduction');
+                $hours        = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
+                $price        = round(($announce->getPrice() /24) * $hours, 2);
+                /** @var SubmitButton $btnReduction */
+                $btnReduction = $form->get('reduction');
 
-                if ($btnReduc->isClicked()) {
+                if ($btnReduction->isClicked()) {
                     $price -= 5;
                 }
 
@@ -101,7 +103,7 @@ class AnnounceController extends AbstractController
                              ->setEndDate($date['stopDateTime'])
                              ->setPricePaid($price);
 
-                    if ($btnReduc->isClicked()) {
+                    if ($btnReduction->isClicked()) {
                         $user->setLoyaltyPoints($this->getLoyaltyPoint($user));
                     }
 

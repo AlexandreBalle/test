@@ -179,12 +179,14 @@ class UserController extends AbstractController
                     /** @var User $user */
                     $user    = $this->getUser();
                     $comment = new Comment();
+                    /** @var Location $location */
                     $comment->setAnnounce($location->getAnnounce())
                             ->setUser($user)
                             ->setRate($request->request->get('rate'))
                             ->setContent($content);
                     $em->persist($comment);
                 }
+
                 $location->getAnnounce()->setEnable(true);
                 $location->setReturned(true)
                          ->setReturnedAt(new \DateTime());

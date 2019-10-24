@@ -20,10 +20,10 @@ class AnnounceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return mixed
      */
-    public function findForSearch($value)
+    public function findForSearch(array $value)
     {
         $search = $this->createQueryBuilder('a')
             ->where('a.enable = true')
@@ -52,10 +52,10 @@ class AnnounceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return mixed
      */
-    public function findForSearchSwipe($value)
+    public function findForSearchSwipe(array $value)
     {
         $search = $this->createQueryBuilder('a')
                        ->orderBy('a.id', 'ASC')
@@ -82,10 +82,10 @@ class AnnounceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $type
+     * @param string|null $type
      * @return mixed
      */
-    public function findByVehicleType($type)
+    public function findByVehicleType(?string $type)
     {
         return $this->createQueryBuilder('a')
                     ->innerJoin('a.vehicle', 'v')
