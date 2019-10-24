@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\RegistrationFormType;
 use App\Form\UserType;
-use App\Repository\AnnounceRepository;
 use App\Repository\LocationRepository;
 use Nzo\UrlEncryptorBundle\Annotations\ParamDecryptor;
 use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
@@ -172,7 +171,7 @@ class UserController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $em           = $this->getDoctrine()->getManager();
-            /** @var AnnounceRepository $repoLocation */
+            /** @var LocationRepository $repoLocation */
             $repoLocation = $em->getRepository(Location::class);
 
             /** @var Location $location */
