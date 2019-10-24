@@ -263,11 +263,13 @@ class Announce
         return $this;
     }
 
-    public function getFullAddress() {
+    public function getFullAddress()
+    {
         return $this->address . ", ". $this->zipcode . " " . $this->city;
     }
 
-    public function objectToJSON(){
+    public function objectToJSON()
+    {
         $announce = [];
         $announce['id'] = $this->getId();
         $announce['price'] = $this->getPrice();

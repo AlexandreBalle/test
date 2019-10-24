@@ -114,7 +114,8 @@ class HomeController extends AbstractController
     }
 
 
-    private function getJsonAnnounceForMap(){
+    private function getJsonAnnounceForMap()
+    {
         $announcesArray = [];
         $em             = $this->getDoctrine()->getManager();
         /** @var UserRepository $repoUser */
@@ -122,17 +123,17 @@ class HomeController extends AbstractController
         $announces      = $repoAnnounce->findBy(['enable' => true]);
 
         /** @var Announce $announce */
-        foreach ($announces as $announce){
+        foreach ($announces as $announce) {
             $announceArray            = ($announce->objectToJSON());
-            $announceArray['address'] = str_replace("'"," ",$announceArray['address']);
+            $announceArray['address'] = str_replace("'", " ", $announceArray['address']);
             $address                  = $announceArray['address']." ".$announceArray['zipCode'];
             $url                      = "https://maps.google.com/maps/api/geocode/json?address=".
                                         urlencode($address).
                                         "&key=AIzaSyATr6fvRb-z29lA4z_iVXLcXrfOXh86MRs";
             $ch                       = curl_init();
 
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $responseJson = curl_exec($ch);
@@ -146,16 +147,16 @@ class HomeController extends AbstractController
                 $announceArray['long'] = $longitude;
             }
 
-            $body = $this->renderView('/home/bodyMarkerMap.html.twig',[
+            $body = $this->renderView('/home/bodyMarkerMap.html.twig', [
                 'announce' => $announce,
             ]);
 
-            $body = str_replace('"',"'", $body);
-            $body = str_replace("\n","", $body);
+            $body = str_replace('"', "'", $body);
+            $body = str_replace("\n", "", $body);
 
             $announceArray['body'] = $body;
 
-            array_push($announcesArray,$announceArray);
+            array_push($announcesArray, $announceArray);
         }
 
         return json_encode($announcesArray);

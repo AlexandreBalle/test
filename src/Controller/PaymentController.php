@@ -22,7 +22,8 @@ class PaymentController extends AbstractController
 {
     private $kernel;
 
-    public function __construct(KernelInterface $appKernel) {
+    public function __construct(KernelInterface $appKernel)
+    {
         $this->kernel = $appKernel;
     }
 
@@ -135,13 +136,15 @@ class PaymentController extends AbstractController
         if ($type == "facture") {
             $html = $this->renderView(
                 'payment/partials/_facture.html.twig', [
-                'location' => $location
-            ]);
-        } else if ($type == "contrat") {
+                    'location' => $location
+                ]
+            );
+        } elseif ($type == "contrat") {
             $html = $this->renderView(
                 'payment/partials/_contrat.html.twig', [
-                'location' => $location
-            ]);
+                    'location' => $location
+                ]
+            );
         }
 
         $pdf->loadHtml($html);
@@ -153,7 +156,7 @@ class PaymentController extends AbstractController
         if ($type == "facture") {
             $publicDirectory = $this->kernel->getProjectDir() . '/public/uploads/pdf/factures';
             $pdfFilepath =  $publicDirectory . '/facture_'.$location->getId().'.pdf';
-        } else if ($type == "contrat") {
+        } elseif ($type == "contrat") {
             $publicDirectory = $this->kernel->getProjectDir() . '/public/uploads/pdf/contrats';
             $pdfFilepath =  $publicDirectory . '/contrat_'.$location->getId().'.pdf';
         }

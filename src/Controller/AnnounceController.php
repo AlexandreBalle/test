@@ -205,7 +205,6 @@ class AnnounceController extends AbstractController
                     'user'          => $user,
                     'type'          => $data['vehicle']['type'],
                 ])) {
-
                     $vehicle  = new Vehicle();
                     $door     = array_key_exists('door', $data['vehicle']) ? $data['vehicle']['door'] : null;
                     $place    = array_key_exists('place', $data['vehicle']) ? $data['vehicle']['door'] : null;
