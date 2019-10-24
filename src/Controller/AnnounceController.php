@@ -82,8 +82,9 @@ class AnnounceController extends AbstractController
             if ($this->isCsrfTokenValid('location_item', $request->request->get('date_location')['_token'])) {
                 $hours      = $this->diffHours($date['stopDateTime'], $date['startDateTime']);
                 $price      = round(($announce->getPrice() /24) * $hours, 2);
+                $btnReduc   = $form->get('reduction');
 
-                if ($form->get('reduction')->isClicked()) {
+                if ($btnReduc->isClicked()) {
                     $price -= 5;
                 }
 
@@ -100,7 +101,7 @@ class AnnounceController extends AbstractController
                              ->setEndDate($date['stopDateTime'])
                              ->setPricePaid($price);
 
-                    if ($form->get('reduction')->isClicked()) {
+                    if ($btnReduc->isClicked()) {
                         $user->setLoyaltyPoints($this->getLoyaltyPoint($user));
                     }
 
