@@ -13,38 +13,39 @@
             <div class="row mt-3">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     {{ form_start(formUser) }}
+                    {{ form_row(formUser._token) }}
                     <table class="table table-hover">
                         <tbody>
                             <tr>
-                                <td><b>Nom : </b></td>
+                                <td><b>{{ form_label(formUser.lastname) }}</b></td>
                                 <td>{{ form_widget(formUser.lastname, {'value': infoUser.lastname}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Prénom : </b></td>
+                                <td><b>{{ form_label(formUser.firstname) }}</b></td>
                                 <td>{{ form_widget(formUser.firstname, { 'value': infoUser.firstname}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Date de naissance : </b></td>
+                                <td><b>{{ form_label(formUser.birthdayDate) }}</b></td>
                                 <td>{{ form_widget(formUser.birthdayDate, {'value': infoUser.birthdayDate | date('Y-m-d')}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Adresse : </b></td>
+                                <td><b>{{ form_label(formUser.address) }}</b></td>
                                 <td>{{ form_widget(formUser.address, {'value': infoUser.address}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Code postal : </b></td>
+                                <td><b>{{ form_label(formUser.zipcode) }}</b></td>
                                 <td>{{ form_widget(formUser.zipcode, {'value': infoUser.zipcode}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Ville : </b></td>
+                                <td><b>{{ form_label(formUser.city) }}</b></td>
                                 <td>{{ form_widget(formUser.city, {'value': infoUser.city}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>N° Téléphone : </b></td>
+                                <td><b>{{ form_label(formUser.phone) }}</b></td>
                                 <td>{{ form_widget(formUser.phone, {'value': infoUser.phone}) }}</td>
                             </tr>
                             <tr>
-                                <td><b>Email : </b></td>
+                                <td><b>{{ form_label(formUser.email) }}</b></td>
                                 <td>{{ form_widget(formUser.email, {'value': infoUser.email}) }}</td>
                             </tr>
                             <tr>
@@ -52,8 +53,18 @@
                                 <td>{{ (infoUser.loyaltyPoints != 0) ? infoUser.loyaltyPoints : 0}}</td>
                             </tr>
                             <tr>
-                                <td><b>Permis de conduire : </b></td>
-                                <td>{{ form_widget(formUser.licenseDriving, {'value': infoUser.licenseDriving}) }}</td>
+                                <td><b>{{ form_label(formUser.licenseDriving) }}</b></td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            {{ form_widget(formUser.licenseDriving) }}
+                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

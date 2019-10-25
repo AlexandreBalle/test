@@ -27,6 +27,7 @@
                             <div class="r-or-line"><span>OR SIGN IN</span></div>
 
                             {{ form_start(registrationForm) }}
+                            {{ form_row(registrationForm._token) }}
                             <div class="form-group">
                                 {{ form_widget(registrationForm.email) }}
                                 {% if form_errors(registrationForm.email) %}

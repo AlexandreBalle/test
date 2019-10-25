@@ -6,10 +6,11 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
@@ -69,14 +70,24 @@ class UserType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                 ],
-            ])->add('licenseDriving', TextType::class, [
-                'label'       => 'Ville :',
-                'required'    => true,
+            ])->add('licenseDriving', FileType::class, [
+                'label'       => 'Permis de conduire :',
+                'required'    => false,
+                'mapped'      => false,
                 'attr'        => [
-                    'class'   => 'form-control'
+                    'class'            => "custom-file-input",
+                    'id'               => "inputGroupFile01",
+                    'aria-describedby' => "inputGroupFileAddon01"
                 ],
                 'constraints' => [
-                    new NotBlank(),
+                    new File([
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'image/png',
+                            'image/jpeg',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid document (PNG, JPEG, PDF)',
+                    ])
                 ],
             ])->add('email', EmailType::class, [
                 'label'       => 'Email :',
@@ -89,7 +100,7 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('phone', TextType::class, [
-                'label'       => 'Ville :',
+                'label'       => 'Telephone :',
                 'required'    => true,
                 'attr'        => [
                     'class'   => 'form-control'
@@ -104,7 +115,10 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class'      => User::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'user_item',
         ]);
     }
 }

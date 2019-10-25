@@ -13,6 +13,8 @@ use Nzo\UrlEncryptorBundle\Annotations\ParamDecryptor;
 use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +46,10 @@ class UserController extends AbstractController
         $formRegister->handleRequest($request);
 
         if ($formRegister->isSubmitted() && $formRegister->isValid()) {
+            if (!$this->isCsrfTokenValid('registration_item', $request->request->get('registration_form')['_token'])) {
+                throw new AccessDeniedException("Formulaire invalide");
+            }
+
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -131,7 +137,30 @@ class UserController extends AbstractController
             $formUser->handleRequest($request);
 
             if ($formUser->isSubmitted() && $formUser->isValid()) {
+                if (!$this->isCsrfTokenValid('user_item', $request->request->get('user')['_token'])) {
+                    throw new AccessDeniedException("Formulaire invalide");
+                }
+
                 $entityManager = $this->getDoctrine()->getManager();
+
+                if ($file = $formUser->get('licenseDriving')->getData()) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                    try {
+                        $file->move(
+                            $this->getParameter('brochures_directory').'/license',
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        throw new FileException("Can't move file");
+                    }
+
+                    $userConnected->setLicenseDriving($newFilename);
+                }
+
                 $entityManager->flush();
 
                 return $this->render('user/account.html.twig', [

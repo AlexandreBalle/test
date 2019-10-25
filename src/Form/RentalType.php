@@ -52,6 +52,7 @@ class RentalType extends AbstractType
             'required'    => false,
             'attr'        => [
                 'id'      => 'customFile',
+                'class' => 'custom-file-input'
             ],
             'constraints' => [
                 new NotBlank(),

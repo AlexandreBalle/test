@@ -31,22 +31,47 @@ App\Entity\User:
     roles: "[ROLE_ADMIN]"
 
 App\Entity\Vehicle:
-  vehicle{1..500}:
+  vehicle{1..20}:
     user: "@user<numberBetween(1,20)>"
-    photo: "image-not-found.png"
-    type:  <randomElement(['voiture','scooter'])>
-    brand: <randomElement(['Mazda','Kia','Renault', 'Opel', 'Tesla'])>
-    model: <randomElement(['Clio','208','Class A', '508', 'A1'])>
+    type:  'voiture'
+    brand: <randomElement(['Peugeot','Kia','Renault', 'Tesla'])>
+    model: <randomElement(['Zoe','208','Model S'])>
     km: <numberBetween( 0, 200000)>
+    photo: <randomElement(['e-208.jpg','model-3.jpg', 'zoe.jpg'])>
     matriculation: <swiftBicNumber()>
-    year: <dateTimeBetween('-30 years', '-1 years')>
+    year: <dateTimeBetween('-10 years', '-1 years')>
     autonomy: <numberBetween(0, 700)>
     door: <randomElement([2,5,7])>
     place: <randomElement([2,5,7])>
 
+  scooter{1..20}:
+    user: "@user<numberBetween(1,20)>"
+    type:  'scooter'
+    brand: <randomElement(['Piaggio','Yamaha','Suziki', 'Kymco'])>
+    model: <randomElement(['TMAX','XMAX','Vespa', 'Agility', 'YZ'])>
+    km: <numberBetween( 0, 30000)>
+    photo: <randomElement(['e-scooter-3.jpg','e-scooter.jpg'])>
+    matriculation: <swiftBicNumber()>
+    year: <dateTimeBetween('-4 years', '-1 years')>
+    autonomy: <numberBetween(0, 200)>
+    door: '1'
+    place: <randomElement([2,1])>
+
+
+
 App\Entity\Announce:
   announce{1..20}:
     vehicle: "@vehicle<current()>"
+    user: "@user<numberBetween(1,20)>"
+    address: <streetAddress()>
+    price: <numberBetween( 0, 80)>
+    zipcode: <numberBetween(10000, 90000)>
+    city: <city()>
+    description: <paragraph( 3, true)>
+    enable: boolean(80)
+
+  announcescooter{1..20}:
+    vehicle: "@scooter<current()>"
     user: "@user<numberBetween(1,20)>"
     address: <streetAddress()>
     price: <numberBetween( 0, 80)>
